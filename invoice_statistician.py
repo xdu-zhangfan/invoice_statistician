@@ -61,6 +61,11 @@ def button_gen_callback():
             )
             name_pre_res = name_pre_res[:-1]
 
+            if name_pre_res in main_dict:
+                messagebox.askokcancel(
+                    title='提示', message='Repeated file name "' + name_pre_res + '".')
+                return
+
             main_dict[name_pre_res] = money
         except:
             print(Fore.RED + 'Invalid file name "' + filename + '".')
@@ -68,6 +73,9 @@ def button_gen_callback():
                 Fore.RED
                 + 'Please ensure that the format of the name of each file is "name-amount.pdf"'
             )
+
+            messagebox.askokcancel(
+                title='提示', message='Invalid file name "' + filename + '".')
 
     print(Fore.RESET + "Total items: ", len(main_dict))
 
@@ -81,14 +89,14 @@ def button_gen_callback():
 
     for i in all_money:
         if all_money[i] > 1:
-            print(
-                Fore.YELLOW
-                + "Warning: money "
-                + str(i)
-                + " repeated "
-                + str(all_money[i])
-                + " times."
-            )
+            warn_msgstr = str("Warning: money "
+                              + str(i)
+                              + " repeated "
+                              + str(all_money[i])
+                              + " times.")
+
+            print(Fore.YELLOW+warn_msgstr)
+            messagebox.askokcancel(title='提示', message=warn_msgstr)
 
     # Write .csv file
     rows = [("Item", "Money")]
